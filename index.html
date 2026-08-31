@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الطلاب</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/modals-grades.css">
+    <link rel="stylesheet" href="css/modals-groups.css">
+    <link rel="stylesheet" href="css/modals-schedule.css">
+    <link rel="stylesheet" href="css/modals-students.css">
+    <link rel="stylesheet" href="css/stages.css">
+    <link rel="stylesheet" href="css/filters.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/actions.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/selection.css">
+    <link rel="stylesheet" href="css/students-table.css">
+    <link rel="stylesheet" href="css/payments-table.css">
+    <link rel="stylesheet" href="css/payments-controls.css">
+    <link rel="stylesheet" href="css/payments-modals.css">
+    <link rel="stylesheet" href="css/financial.css">
+    <link rel="stylesheet" href="css/financial-reports.css">
+    <link rel="stylesheet" href="css/financial-config.css">
+    <link rel="stylesheet" href="css/financial-schedule.css">
+    <link rel="stylesheet" href="css/attendance-records.css">
+    <link rel="stylesheet" href="css/repeated-absence.css">
+    <link rel="stylesheet" href="css/instant-registration.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/modernize.css">
+    <link rel="stylesheet" href="css/exams.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/print.css">
+    <link rel="stylesheet" href="css/print-branding.css">
+    <link rel="stylesheet" href="css/print-tables.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/transfer.css">
+    <link rel="stylesheet" href="css/light-theme.css">
+    <link rel="stylesheet" href="css/student-codes.css">
+    <link rel="stylesheet" href="css/student-codes-print.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Direct PDF downloads capture the browser-rendered report as an image.
+         This keeps Arabic shaping identical to the on-screen report. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@latest"></script>
+    <script src="js/appwrite-config.js"></script>
+</head>
+<body>
+    <!-- Root target used by the exam print renderer. It stays empty and
+         invisible on screen until a print template is injected. -->
+    <div id="examPrintArea" class="print-only-container" aria-hidden="true"></div>
+
+    <!-- Official Print Header (Hidden on Screen) -->
+    <div id="officialPrintHeader" class="print-only cover-page">
+        <!-- Watermark Container -->
+        <div id="printWatermark" class="print-watermark"></div>
+
+        <div class="print-header-top">
+            <div class="print-header-center">
+                <h1 id="printDocumentTitle"></h1>
+                <div id="printSubTitle" class="print-subtitle"></div>
+            </div>
+            
+            <div class="academy-brand-box">
+                <div class="academy-logo-print">
+                    <i id="printAcademyIcon" class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="academy-details">
+                    <span class="label">أكاديمية:</span>
+                    <strong id="printTeacherName" class="value"></strong>
+                </div>
+            </div>
+
+            <div class="metadata-box">
+                <div class="timestamp-box">
+                    <span class="label">تاريخ الاستخراج:</span>
+                    <span id="printDate" class="value"></span>
+                </div>
+                <div class="page-count-box" style="margin-top: 10pt;">
+                    <span class="label">رقم الصفحة:</span>
+                    <span class="page-number"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Analytics Summary Cards for Print -->
+        <div id="printSummaryCards" class="print-summary-grid">
+            <div class="print-summary-card">
+                <span class="card-label">إجمالي الطلاب</span>
+                <strong id="printStatTotalStudents" class="card-value">0</strong>
+            </div>
+            <div class="print-summary-card">
+                <span class="card-label">الحالة المالية</span>
+                <strong id="printStatFinancial" class="card-value">---</strong>
+            </div>
+            <div class="print-summary-card">
+                <span class="card-label">متوسط الأداء / الحضور</span>
+                <strong id="printStatPerformance" class="card-value">---</strong>
+            </div>
+            <div class="print-summary-card">
+                <span class="card-label">الغائبين / الممتنعين</span>
+                <strong id="printStatFlagged" class="card-value">0</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Table Header for Page 2+ (Hidden on Screen) -->
+    <div id="printTableHeader" class="print-only table-page-header">
+        <h2 id="printTableGradeName"></h2>
+    </div>
+
+    <!-- App Container -->
+    <div id="app">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container">
+            <!-- Content injected via js/templates/login-template.js -->
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="dashboard page-section" style="display: none;">
+            <header id="mainHeader" class="glass-header">
+                <!-- Content injected via js/templates/header-template.js -->
+            </header>
+
+            <!-- Components Container -->
+            <div id="settingsContainer"></div>
+            
+            <!-- Main Content Area -->
+            <div id="viewsContainer">
+                <!-- All views (home, students, etc.) injected via js/templates/view-templates.js -->
+            </div>
+
+            <!-- Navigation Container -->
+            <div id="navContainer"></div>
+        </div>
+    </div>
+
+    <!-- Floating page navigation control -->
+    <button id="scrollToTopBtn" class="scroll-top-btn" title="العودة للأعلى" style="display: none;" aria-label="العودة للأعلى">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+
+    <!-- Official Print Footer (Repeating on Pages) -->
+    <div id="officialPrintFooter" class="print-only print-footer">
+        <div class="footer-content">
+            <div class="footer-right">نظام إدارة الطلاب الذكي &copy; 2026</div>
+            <div class="footer-center">صفحة <span class="page-number"></span></div>
+            <div class="footer-left" id="footerTeacherName"></div>
+        </div>
+        <div class="developer-credit">DEVELOPED BY MAZEN AHMED</div>
+    </div>
+
+    <!-- Load all scripts in dependency order -->
+    <script src="js/notification-system.js"></script>
+    <script src="js/tenant-store.js"></script>
+    <script src="js/global-state.js"></script>
+    <script src="js/persistence-manager.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/students-data.js"></script>
+    <script src="js/student-codes.js"></script>
+    <script src="js/students-ui.js"></script>
+    <script src="js/student-form-manager.js"></script>
+    <script src="js/students-delete.js"></script>
+    <script src="js/students-actions.js"></script>
+    <script src="js/attendance-data.js"></script>
+    <script src="js/attendance-ui.js"></script>
+    <script src="js/attendance-groups-ui.js"></script>
+    <script src="js/attendance-records-ui.js"></script>
+    <script src="js/attendance-profile-ui.js"></script>
+    <script src="js/attendance-groups.js"></script>
+    <script src="js/attendance-records.js"></script>
+    <script src="js/group-attendance-archive.js"></script>
+    <script src="js/repeated-absence.js"></script>
+    <script src="js/student-navigation.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/students-payments-data.js"></script>
+    <script src="js/students-payments-ui.js"></script>
+    <script src="js/family-payment-ui.js"></script>
+    <script src="js/multi-stage-payment-ui.js"></script>
+    <script src="js/students-payments-months.js"></script>
+    <script src="js/students-payments-modals.js"></script>
+    <script src="js/financial-data.js"></script>
+    <script src="js/financial-reports-ui.js"></script>
+    <script src="js/financial-config-ui.js"></script>
+    <script src="js/financial-manager.js"></script>
+    <script src="js/schedule-actions.js"></script>
+    <script src="js/schedule-ui.js"></script>
+    <script src="js/exams-data.js"></script>
+    <script src="js/exams-grades-ui.js"></script>
+    <script src="js/exams-ui.js"></script>
+    <script src="js/print-engine.js"></script>
+    <script src="js/backup-manager.js"></script>
+    <script src="js/annual-transfer.js"></script>
+    <script src="js/dashboard-ui.js"></script>
+    <script src="js/dashboard-sessions.js"></script>
+    <script src="js/dashboard-hub-ui.js"></script>
+    <script src="js/dashboard-hub-actions.js"></script>
+    <script src="js/dashboard-hub.js"></script>
+    <script src="js/students-payments.js"></script>
+    <script src="js/students-siblings.js"></script>
+    <script src="js/students-multi-registration.js"></script>
+    <script src="js/custom-fee-ui.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/modal-manager.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/grade-selection.js"></script>
+    <script src="js/context-controller.js"></script>
+    <script src="js/shortcuts.js"></script>
+    <script src="js/barcode-scanner.js"></script>
+    <script src="js/templates/login-template.js"></script>
+    <script src="js/templates/header-template.js"></script>
+    <script src="js/templates/views/home-view.js"></script>
+    <script src="js/templates/views/students-view.js"></script>
+    <script src="js/templates/views/student-codes-view.js"></script>
+    <script src="js/templates/views/attendance-view.js"></script>
+    <script src="js/templates/views/schedule-view.js"></script>
+    <script src="js/templates/views/payments-view.js"></script>
+    <script src="js/templates/views/month-display-view.js"></script>
+    <script src="js/templates/views/records-view.js"></script>
+    <script src="js/templates/views/profile-view.js"></script>
+    <script src="js/templates/views/non-payers-view.js"></script>
+    <script src="js/templates/views/group-attendance-archive-view.js"></script>
+    <script src="js/templates/views/repeated-absence-view.js"></script>
+    <script src="js/templates/views/financial-reports-view.js"></script>
+    <script src="js/templates/views/exams-view.js"></script>
+    <script src="js/templates/views/exam-grades-view.js"></script>
+    <script src="js/templates/views/backup-view.js"></script>
+    <script src="js/templates/views/transfer-view.js"></script>
+    <script src="js/templates/view-templates.js"></script>
+    <script src="js/modals/auth-templates.js"></script>
+    <script src="js/modals/grade-templates.js"></script>
+    <script src="js/modals/student-templates.js"></script>
+    <script src="js/modals/attendance-templates.js"></script>
+    <script src="js/modals/record-templates.js"></script>
+    <script src="js/modals/financial-templates.js"></script>
+    <script src="js/modals/system-templates.js"></script>
+    <script src="js/modals/profile-print-templates.js"></script>
+    <script src="js/modals/student-export-templates.js"></script>
+    <script src="js/modals/schedule-export-templates.js"></script>
+    <script src="js/modal-templates.js"></script>
+    <script src="js/instant-registration.js"></script>
+    <script src="js/profile-print.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
