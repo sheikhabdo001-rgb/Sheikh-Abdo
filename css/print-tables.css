@@ -1,0 +1,847 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+/* Data Table Formatting for Professional Printing */
+
+/* Clean student-list template used by both browser printing and PDF capture. */
+.student-list-pdf-host,
+.print-report-container {
+    box-sizing: border-box;
+    direction: rtl;
+    width: 794px;
+    min-height: 1122px;
+    padding: 20px 20px 45px;
+    position: relative;
+    overflow: visible;
+    background: #ffffff;
+    color: #0f172a;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+    text-align: right;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+    font-synthesis: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.student-list-pdf-host,
+.student-list-pdf-host * {
+    box-sizing: border-box;
+}
+
+/* Keep Arabic shaping identical to the detailed student-report PDF. */
+#pdf-printable-container {
+    width: 794px !important;
+    background: #ffffff !important;
+    direction: rtl !important;
+    text-align: right !important;
+    unicode-bidi: embed !important;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    font-variant-ligatures: normal !important;
+}
+
+#pdf-printable-container .student-list-page,
+.student-list-page {
+    position: relative;
+    width: 794px;
+    height: 1122px;
+    overflow: hidden;
+    background: #ffffff;
+    direction: rtl !important;
+    text-align: right !important;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif !important;
+    unicode-bidi: embed !important;
+}
+
+.student-list-pdf-header,
+.header-box {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    border: 2px solid #6b21a8;
+    border-radius: 16px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.student-list-pdf-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #6b21a8;
+}
+
+.student-list-pdf-logo {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #6b21a8;
+    border-radius: 8px;
+    font-size: 22px;
+}
+
+.student-list-pdf-brand strong,
+.student-list-pdf-teacher {
+    display: block;
+}
+
+.student-list-pdf-brand strong {
+    color: #6b21a8;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.student-list-pdf-teacher {
+    margin-top: 2px;
+    color: #4c1d95;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.student-list-pdf-header h1 {
+    margin: 10px 0 4px;
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.student-list-pdf-subtitle {
+    display: none;
+}
+
+.student-list-pdf-meta,
+.info-bar {
+    display: flex;
+    justify-content: space-around;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed #d8b4fe;
+    color: #4b5563;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.student-list-pdf-meta strong {
+    color: #6b21a8;
+    font-weight: 700;
+}
+
+.student-list-pdf-section-banner,
+.banner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    background: #6b21a8;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.student-list-pdf-banner-title,
+.student-list-pdf-filter-badge {
+    display: block;
+}
+
+.student-list-pdf-filter-badge,
+.banner .badge {
+    width: fit-content;
+    margin: 6px auto 0;
+    padding: 2px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f5f3ff;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.print-table.student-list-pdf-table,
+.data-table {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #e9d5ff;
+    overflow: hidden;
+    direction: rtl;
+    table-layout: fixed;
+    margin-top: 10px;
+    background: #ffffff;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+    unicode-bidi: plaintext;
+}
+
+.student-list-pdf-table th,
+.student-list-pdf-table td {
+    border-right: 1px solid #e9d5ff;
+    border-bottom: 1px solid #f3e8ff;
+    padding: 8px;
+    color: #1e293b;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.student-list-pdf-table th {
+    background: #f3e8ff;
+    color: #5b21b6;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 2px solid #e9d5ff;
+}
+
+.student-list-pdf-table tbody tr:nth-child(even) td {
+    background: #faf5ff;
+}
+
+.student-list-pdf-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.student-list-pdf-table tr > *:last-child {
+    border-left: 0;
+}
+
+.student-list-pdf-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Empty slots remain physical rows in exports. Only their serial is inked. */
+.student-list-pdf-table tbody tr.row-empty td {
+    color: #1e293b !important;
+    background: #ffffff !important;
+    font-style: normal;
+    opacity: 1;
+}
+
+.student-list-pdf-table tbody tr.row-empty td:not(:first-child) {
+    color: transparent !important;
+}
+
+.student-list-pdf-table th:nth-child(1),
+.student-list-pdf-table td:nth-child(1) { width: 7%; }
+.student-list-pdf-table th:nth-child(2),
+.student-list-pdf-table td:nth-child(2) { width: 16%; }
+.student-list-pdf-table th:nth-child(3),
+.student-list-pdf-table td:nth-child(3) { width: 25%; }
+.student-list-pdf-table th:nth-child(4),
+.student-list-pdf-table td:nth-child(4) { width: 21%; }
+.student-list-pdf-table th:nth-child(5),
+.student-list-pdf-table td:nth-child(5),
+.student-list-pdf-table th:nth-child(6),
+.student-list-pdf-table td:nth-child(6) { width: 15.5%; }
+
+.student-list-pdf-unpaid-table th:nth-child(1),
+.student-list-pdf-unpaid-table td:nth-child(1) { width: 8%; }
+.student-list-pdf-unpaid-table th:nth-child(2),
+.student-list-pdf-unpaid-table td:nth-child(2) { width: 24%; }
+.student-list-pdf-unpaid-table th:nth-child(3),
+.student-list-pdf-unpaid-table td:nth-child(3) { width: 30%; }
+.student-list-pdf-unpaid-table th:nth-child(4),
+.student-list-pdf-unpaid-table td:nth-child(4) { width: 16%; }
+.student-list-pdf-unpaid-table th:nth-child(5),
+.student-list-pdf-unpaid-table td:nth-child(5) { width: 22%; }
+
+.student-list-pdf-group-session-table th:nth-child(1),
+.student-list-pdf-group-session-table td:nth-child(1) { width: 10%; }
+.student-list-pdf-group-session-table th:nth-child(2),
+.student-list-pdf-group-session-table td:nth-child(2) { width: 58%; }
+.student-list-pdf-group-session-table th:nth-child(3),
+.student-list-pdf-group-session-table td:nth-child(3) { width: 32%; }
+
+.student-list-pdf-exam-grades-table {
+    table-layout: fixed;
+}
+
+.student-list-pdf-exam-grades-table th,
+.student-list-pdf-exam-grades-table td {
+    padding: 7px 5px;
+    font-size: 10px;
+}
+
+/* Single-exam reports have room for the explicit evaluation column. */
+.student-list-pdf-single-exam-table th {
+    padding: 8px;
+    font-size: 13px;
+}
+
+.student-list-pdf-single-exam-table td {
+    padding: 8px;
+    font-size: 12px;
+}
+
+@media print {
+    @page exam-grades-landscape {
+        size: A4 landscape;
+        margin: 8mm;
+    }
+
+    body.clean-student-list-print.exam-grades-landscape-print {
+        page: exam-grades-landscape;
+    }
+}
+
+/*
+ * STUDENTS LIST PDF/PRINT BREAK FIX
+ *
+ * The clean Students List export is rasterized from fixed A4 page elements,
+ * while the browser-print fallback uses the same table classes. Keep the
+ * table itself break-safe in both paths and reserve the footer's bottom band.
+ */
+@media print {
+    @page students-list-print {
+        size: A4 portrait;
+        margin: 15mm 10mm 20mm 10mm;
+    }
+
+    body.clean-student-list-print {
+        page: students-list-print;
+    }
+
+    html,
+    body,
+    .students-list-container,
+    .student-list-print-host,
+    body.exam-direct-print #examPrintArea {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        margin: 0 !important;
+    }
+
+    .students-table,
+    .student-list-pdf-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
+        overflow: visible !important;
+    }
+
+    .students-table thead,
+    .student-list-pdf-table thead {
+        display: table-header-group !important;
+    }
+
+    .students-table tfoot,
+    .student-list-pdf-table tfoot {
+        display: table-footer-group !important;
+    }
+
+    .students-table tr,
+    .student-list-pdf-table tr,
+    .students-table tbody tr,
+    .student-list-pdf-table tbody tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .students-table td,
+    .students-table th,
+    .student-list-pdf-table td,
+    .student-list-pdf-table th {
+        padding: 8px 6px !important;
+        font-size: 11px !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    /*
+     * Browser-print fallback: the fixed footer now occupies the same
+     * reserved bottom band as the named A4 page margin.
+     */
+    .student-list-print-host {
+        padding-bottom: 20mm !important;
+    }
+
+    .student-list-print-host .print-footer,
+    .student-list-print-host .student-list-pdf-footer,
+    .student-list-print-host .pdf-footer-container {
+        position: fixed !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 15mm !important;
+        min-height: 15mm !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 10mm !important;
+        border-top: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+        color: #6b21a8 !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        z-index: 2 !important;
+    }
+
+    body.exam-direct-print #examPrintArea > .student-list-pdf-page .pdf-footer-container {
+        position: absolute !important;
+        height: 15mm !important;
+        min-height: 15mm !important;
+        box-sizing: border-box !important;
+        background: #ffffff !important;
+        z-index: 2 !important;
+    }
+}
+
+.student-list-pdf-arabic-cell {
+    direction: rtl;
+    text-align: center !important;
+    unicode-bidi: plaintext;
+    font-weight: 700;
+}
+
+.student-list-pdf-ltr-cell {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.student-list-pdf-phone-cell {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: center !important;
+}
+
+.student-list-pdf-code-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-weight: 700;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.watermark-container.student-list-pdf-watermark {
+    display: none;
+}
+
+.student-list-pdf-footer,
+.pdf-footer-container {
+    display: none;
+}
+
+.student-list-pdf-developer {
+    flex: 0 0 auto;
+    direction: ltr;
+    text-align: left;
+    color: #6b21a8;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.student-list-pdf-page-badge {
+    flex: 0 0 auto;
+    direction: rtl;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 14px;
+    border: 1px solid #ddd6fe;
+    border-radius: 20px;
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.student-list-pdf-footer,
+.pdf-footer-container {
+    box-sizing: border-box;
+    width: auto;
+    direction: ltr;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.student-list-pdf-footer .student-list-pdf-developer,
+.pdf-footer-container .student-list-pdf-developer {
+    order: 1;
+    margin-right: auto;
+}
+
+.student-list-pdf-footer .student-list-pdf-page-badge,
+.pdf-footer-container .student-list-pdf-page-badge {
+    order: 2;
+    margin-left: auto;
+}
+
+.student-list-pdf-page-badge span {
+    color: #7c3aed;
+    font-weight: 800;
+}
+
+@media print {
+    .student-list-print-host {
+        display: block !important;
+        min-height: auto !important;
+        padding-bottom: 45px !important;
+    }
+
+    .student-list-print-host .watermark-container.student-list-pdf-watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 0;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100px;
+        pointer-events: none;
+        transform: translate(-50%, -50%) rotate(-30deg);
+        white-space: nowrap;
+    }
+
+    .student-list-print-host .watermark-text {
+        color: rgba(148, 163, 184, 0.05);
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .student-list-print-host .student-list-pdf-footer,
+    .student-list-print-host .pdf-footer-container {
+        position: fixed;
+        right: 15mm;
+        bottom: 15mm;
+        left: 15mm;
+        z-index: 2;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 16px;
+        padding-top: 8px;
+        border-top: 1px solid #e9d5ff;
+        background: #ffffff;
+        direction: ltr;
+    }
+
+    .student-list-print-host .student-print-current-page::after {
+        counter-increment: page;
+        content: counter(page);
+    }
+
+    .student-list-print-host .student-list-pdf-table thead {
+        display: table-header-group !important;
+    }
+
+    .student-list-print-host .student-list-pdf-table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        border: 1pt solid #e9d5ff !important;
+        border-radius: 8px !important;
+    }
+
+    .student-list-print-host .student-list-pdf-table th,
+    .student-list-print-host .student-list-pdf-table td {
+        border-right: 1pt solid #e9d5ff !important;
+        border-bottom: 1pt solid #e9d5ff !important;
+        padding: 10px !important;
+        font-size: 12px !important;
+        color: #1e293b !important;
+        text-align: center !important;
+    }
+
+    .student-list-print-host .student-list-pdf-table th {
+        background: #f3e8ff !important;
+        color: #6b21a8 !important;
+        border-bottom: 2pt solid #ddd6fe !important;
+    }
+
+    .student-list-print-host .student-list-pdf-table tbody tr:nth-child(even) td {
+        background: #faf5ff !important;
+    }
+
+    /* The universal print stylesheet hides action columns by default. The
+       clean student template has no action column, so keep all six fields. */
+    .student-list-print-host .student-list-pdf-table th:last-child,
+    .student-list-print-host .student-list-pdf-table td:last-child {
+        display: table-cell !important;
+    }
+}
+
+@media print {
+    /* Table Page Headers (Dynamic per Page 2+) */
+    .table-page-header {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+        padding: 20pt 0;
+        border-bottom: 1.5pt solid #000;
+        margin-bottom: 15pt;
+        visibility: visible !important;
+    }
+
+    .table-page-header h2 {
+        font-size: 18pt;
+        font-weight: 900;
+        color: #000;
+        margin: 0;
+    }
+
+    /* Universal Table Grid Reset */
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        border: 1pt solid #000000 !important;
+        margin-top: 0 !important;
+        page-break-after: auto;
+        background: #ffffff !important;
+        color: #000 !important;
+        font-size: 10pt !important;
+    }
+
+    th, td {
+        border: 1pt solid #000000 !important;
+        color: #000000 !important;
+        opacity: 1 !important;
+        padding: 8pt 4pt !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        background: transparent !important;
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    /* Prevent faint text for clickable links in print */
+    .student-name-cell a, 
+    .hub-student-name a, 
+    .clickable-student-link {
+        color: #000000 !important;
+        text-decoration: none !important;
+        opacity: 1 !important;
+        font-weight: 900 !important;
+        visibility: visible !important;
+    }
+
+    /* Hide Actions Column & Interactive Elements in Print */
+    /* Target last columns that traditionally hold buttons in this app */
+    th:last-child, 
+    td:last-child,
+    .col-actions,
+    .actions-cell,
+    .col-expel-action,
+    .action-btns-group,
+    .table-action-btns,
+    .payment-actions-group,
+    .delete-exam-col-btn {
+        display: none !important;
+    }
+
+    /* Exception: Keep last column if it is 'Estimate' or 'Grade' (for Exams) */
+    .exam-grades-table th:last-child,
+    .exam-grades-table td:last-child,
+    .academic-record-table th:last-child,
+    .academic-record-table td:last-child {
+        display: table-cell !important;
+    }
+
+    th {
+        background-color: #e0e0e0 !important;
+        font-weight: 900 !important;
+        font-size: 10pt !important;
+        border-bottom: 1.5pt solid #000 !important;
+    }
+
+    thead { 
+        display: table-header-group !important; 
+    }
+    
+    tr { 
+        page-break-inside: avoid !important; 
+        page-break-after: auto !important; 
+    }
+    
+    tbody tr:nth-child(even) { 
+        background-color: #f2f2f2 !important; 
+    }
+
+    /* Arabic Name & Cell Alignments */
+    .col-student-name, .col-name, .student-name-cell, .hub-student-name, .class-cell {
+        text-align: right !important;
+        padding-right: 15pt !important;
+        font-weight: bold !important;
+    }
+
+    /* Badge & Status Flattening */
+    .status-badge, .month-status-pill, .grade-estimate-badge, .overall-badge, .hub-class-badge, .dev-badge, .missed-month-badge {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        color: #000 !important;
+        font-weight: 900 !important;
+        box-shadow: none !important;
+        font-size: 10pt !important;
+    }
+
+    /* Financial Reports Specifics */
+    .potential-cell { color: #000 !important; }
+    .collected-cell { color: #000 !important; font-weight: 900 !important; }
+    .debt-cell { color: #333 !important; font-style: italic; }
+
+    .stage-group-header td {
+        background-color: #e6e6e6 !important;
+        font-weight: 900 !important;
+        border-top: 2pt solid #000 !important;
+        border-bottom: 2pt solid #000 !important;
+    }
+
+    .grand-total-row td {
+        background-color: #cccccc !important;
+        font-weight: 900 !important;
+        font-size: 12pt !important;
+    }
+
+    /* Progress Bars as Simple Grids */
+    .progress-container { border: 1pt solid #000 !important; }
+    .progress-bar { background-color: #555 !important; }
+    .progress-text { color: #000 !important; text-shadow: none !important; font-weight: bold !important; }
+
+    /* Smart Hiding Logic */
+    .print-hidden-column {
+        display: none !important;
+    }
+}
+
+/* Final Students List overrides: keep legacy print rules from re-expanding
+   row height after the break-safe rules above. */
+@media print {
+    .student-list-print-host .student-list-pdf-table th,
+    .student-list-print-host .student-list-pdf-table td,
+    body.exam-direct-print #examPrintArea .student-list-pdf-table th,
+    body.exam-direct-print #examPrintArea .student-list-pdf-table td {
+        padding: 8px 6px !important;
+        font-size: 11px !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .student-list-print-host .student-list-pdf-table tr,
+    body.exam-direct-print #examPrintArea .student-list-pdf-table tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+}
+
+/*
+ * Final print isolation: remove every screen-only layout contributor before
+ * the browser computes page geometry. The generated A4 page itself remains
+ * fixed-size for the raster PDF path; only its outer print roots are reset.
+ */
+@media print {
+    html,
+    body,
+    #root,
+    #app,
+    .app-container,
+    #dashboardSection,
+    #viewsContainer,
+    #navContainer,
+    #settingsContainer,
+    #modalsContainer,
+    .dashboard,
+    .main-content,
+    .view-section,
+    .students-list-container,
+    .printable-content-area,
+    .printable-table-area,
+    body.clean-student-list-print #pdf-printable-container,
+    body.exam-direct-print #examPrintArea {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        position: static !important;
+        transform: none !important;
+    }
+
+    .sidebar,
+    .navbar,
+    .bottom-nav,
+    .settings-drawer,
+    .modal-overlay,
+    #financialExportModal,
+    .filter-bar,
+    .no-print,
+    button,
+    #navContainer,
+    #settingsContainer,
+    #modalsContainer,
+    footer:not(.print-footer):not(.student-list-pdf-footer):not(.pdf-footer-container):not(.financial-print-footer) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .printable-content-area,
+    .printable-table-area,
+    body.clean-student-list-print #pdf-printable-container,
+    body.exam-direct-print #examPrintArea {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+    }
+
+    body {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    .print-header-card,
+    .print-kpi-grid,
+    .student-list-pdf-header,
+    .student-list-pdf-section-banner,
+    .student-list-pdf-table tr,
+    .students-table tr,
+    tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .student-list-pdf-table thead,
+    .students-table thead {
+        display: table-header-group !important;
+    }
+
+    .student-list-pdf-table tfoot,
+    .students-table tfoot {
+        display: table-footer-group !important;
+    }
+}

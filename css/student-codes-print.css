@@ -1,0 +1,555 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap');
+
+/* Force Strict A4 Dimensions & Remove Default Browser Margins */
+@page {
+    size: A4 portrait !important;
+    margin: 0mm !important;
+}
+
+@page student-codes-a4 {
+    size: A4 portrait !important;
+    margin: 0mm !important;
+}
+
+.student-codes-print-pages {
+    display: none;
+}
+
+.student-codes-print-page,
+.student-codes-print-page * {
+    box-sizing: border-box;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+}
+
+.student-codes-print-page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    background: #ffffff;
+    color: #0f172a;
+    direction: rtl;
+    page: student-codes-a4;
+}
+
+.student-codes-print-page.pdf-cover-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8mm;
+    page-break-after: always !important;
+    break-after: page !important;
+}
+
+.student-codes-print-page .cover-card {
+    width: 166mm;
+    min-height: 108mm;
+    padding: 18mm 16mm;
+    border: 0.5mm solid #334155;
+    border-radius: 5mm;
+    background: linear-gradient(135deg, #ffffff, #eef2ff 55%, #ecfeff);
+    text-align: center;
+}
+
+.student-codes-print-page .cover-card h1 {
+    margin: 0;
+    color: #172554;
+    font-size: 22pt;
+    font-weight: 900;
+    line-height: 1.35;
+}
+
+.student-codes-print-page .cover-card .meta-line {
+    margin: 9mm 0 0;
+    color: #334155;
+    font-size: 12pt;
+    font-weight: 700;
+    line-height: 1.65;
+}
+
+.student-codes-print-page .cover-card .teacher-name,
+.student-codes-print-page .cover-card .export-date {
+    margin: 4mm 0 0;
+    color: #475569;
+    font-size: 11pt;
+    font-weight: 700;
+}
+
+.student-codes-print-page .cover-card .export-date {
+    margin-top: 2.5mm;
+}
+
+.student-codes-print-page .cover-card .dev-badge {
+    margin-top: 14mm;
+    color: #64748b;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 8pt;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.student-codes-print-page.pdf-grid-page {
+    display: flex;
+    width: 210mm;
+    height: 297mm;
+    flex-direction: column;
+    padding: 8mm;
+    page-break-after: always !important;
+    break-after: page !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-grid-container,
+.student-codes-print-page.pdf-grid-page .barcode-grid-3x3 {
+    display: grid !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(3, 1fr) !important;
+    gap: 5mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    direction: rtl;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
+    padding: 10px 12px !important;
+    border: 1px solid #cccccc !important;
+    border-radius: 6px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card::before,
+.student-codes-print-page.pdf-grid-page .student-code-selection-control {
+    display: none !important;
+}
+
+.student-codes-print-page.pdf-grid-page .student-code-card-content {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-around !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-app-title {
+    font-size: 11px !important;
+    font-weight: bold !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-teacher {
+    font-size: 11px !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-label {
+    font-size: 10px !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-value {
+    font-size: 13px !important;
+    font-weight: bold !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-student-name {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-serial {
+    font-size: 14px !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-badge {
+    font-size: 11px !important;
+    margin-bottom: 4px !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-divider {
+    margin: 4px 0 !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-body {
+    gap: 4px !important;
+    margin-bottom: 2px !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card .student-code-barcode-container {
+    min-height: 0 !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    gap: 2px !important;
+    margin-top: auto !important;
+    padding: 4px !important;
+    max-height: 80px !important;
+    overflow: hidden !important;
+}
+
+.student-codes-print-page.pdf-grid-page .barcode-card svg {
+    width: 100% !important;
+    max-width: 90% !important;
+    height: auto !important;
+}
+
+.student-codes-pdf-capture .student-codes-print-pages {
+    display: block !important;
+    width: 794px !important;
+}
+
+.student-codes-pdf-capture .student-codes-grid,
+.student-codes-pdf-capture > .student-codes-print-header {
+    display: none !important;
+}
+
+.student-codes-pdf-capture .student-codes-print-page {
+    display: flex !important;
+    width: 794px !important;
+    height: 1122px !important;
+    min-height: 1122px !important;
+    padding: 30px !important;
+    page-break-after: always;
+    break-after: page;
+}
+
+.student-codes-pdf-capture .student-codes-print-page.pdf-grid-page .barcode-grid-container,
+.student-codes-pdf-capture .student-codes-print-page.pdf-grid-page .barcode-grid-3x3 {
+    height: 1062px !important;
+    flex-basis: auto !important;
+    gap: 19px !important;
+}
+
+.student-codes-pdf-capture .student-codes-print-page.pdf-grid-page .barcode-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    padding: 10px 12px !important;
+}
+
+.student-codes-pdf-capture .student-codes-print-page.pdf-grid-page .student-code-barcode-container {
+    height: auto !important;
+    flex-basis: auto !important;
+}
+
+.student-codes-pdf-capture .student-codes-print-page.pdf-grid-page .student-code-barcode {
+    height: auto !important;
+}
+
+@media print {
+    html,
+    body {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    @page student-codes-a4 {
+        size: A4 portrait !important;
+        margin: 0mm !important;
+    }
+
+    body.student-codes-print-mode {
+        width: 210mm !important;
+        min-width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+    }
+
+    body.student-codes-print-mode #printable-student-codes {
+        display: block !important;
+        width: 210mm !important;
+        min-width: 210mm !important;
+        max-width: 210mm !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+    }
+
+    body.student-codes-print-mode
+    #printable-student-codes
+    > .student-codes-print-header,
+    body.student-codes-print-mode #studentCodesGrid {
+        display: none !important;
+    }
+
+    body.student-codes-print-mode .student-codes-print-pages {
+        display: block !important;
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body.student-codes-print-mode .student-codes-print-page.pdf-cover-page,
+    body.student-codes-print-mode .student-codes-print-page.pdf-grid-page {
+        display: flex !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        box-sizing: border-box !important;
+        page: student-codes-a4;
+        overflow: hidden !important;
+    }
+
+    body.student-codes-print-mode .student-codes-print-page.pdf-cover-page {
+        page-break-after: always !important;
+        break-after: page !important;
+    }
+
+    body.student-codes-print-mode .student-codes-print-page.pdf-grid-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        padding: 6mm !important;
+        box-sizing: border-box !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        overflow: hidden !important;
+    }
+
+    body.student-codes-print-mode
+    .student-codes-print-page.pdf-grid-page
+    .barcode-grid-container,
+    body.student-codes-print-mode
+    .student-codes-print-page.pdf-grid-page
+    .barcode-grid-3x3 {
+        display: grid !important;
+        width: 100% !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
+        gap: 4mm 5mm !important;
+        overflow: hidden !important;
+    }
+
+    /* Force Grid Pages Visibility */
+    body .student-codes-print-page,
+    body .student-codes-print-page.pdf-grid-page,
+    body .barcode-grid-container,
+    body .barcode-card {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    /* Ensure Grid Layout Displays Properly */
+    .barcode-grid-container.barcode-grid-3x3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
+        gap: 4mm 5mm !important;
+        width: 100% !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+    }
+    /* Prevent DOM Parent Elements from Hiding Print Content */
+    .student-codes-modal,
+    .student-codes-print-container,
+    #student-codes-print-wrapper {
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
+    }
+
+    /* Card Interior Layout */
+    .barcode-card {
+        padding: 10px 12px !important; /* Generous internal padding */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+    }
+    .student-code-card-content {
+        flex-grow: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-around !important; /* Distribute text evenly */
+    }
+    /* Text Scaling */
+    .barcode-card .student-code-app-title { font-size: 11px !important; font-weight: bold; }
+    .barcode-card .student-code-teacher { font-size: 11px !important; }
+
+    .barcode-card .student-code-label { font-size: 10px !important; }
+    .barcode-card .student-code-value { font-size: 13px !important; font-weight: bold; }
+
+    /* Student Name - Prominent Display */
+    .barcode-card .student-code-student-name { 
+        font-size: 15px !important; 
+        font-weight: 800 !important; 
+        color: #000 !important;
+    }
+    .barcode-card .student-code-serial {
+        font-size: 14px !important;
+    }
+    .barcode-card .student-code-badge { 
+        font-size: 11px !important; 
+        margin-bottom: 4px !important;
+    }
+}
+
+/*
+ * Native browser printing uses a temporary, direct body child. Keep this
+ * final override block deliberately strict: app/view visibility rules must
+ * not be able to hide a later page in the print stream.
+ */
+@media print {
+    @page {
+        size: A4 portrait !important;
+        margin: 0 !important;
+    }
+
+    /* Hide the application UI and reveal only the native print source. */
+    body * {
+        visibility: hidden !important;
+    }
+
+    #student-codes-print-wrapper,
+    #student-codes-print-wrapper * {
+        visibility: visible !important;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    body > *:not(#student-codes-print-wrapper) {
+        display: none !important;
+    }
+
+    body #student-codes-print-wrapper {
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 210mm !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+    }
+
+    body #student-codes-print-wrapper,
+    body #student-codes-print-wrapper * {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    body #student-codes-print-wrapper .student-codes-print-page,
+    body #student-codes-print-wrapper .student-codes-print-page.pdf-grid-page {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-before: auto !important;
+        break-before: auto !important;
+        box-sizing: border-box !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        min-height: 297mm !important;
+        padding: 10mm !important;
+        margin: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    /* Cover page styling */
+    body #student-codes-print-wrapper .pdf-cover-page {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 10mm !important;
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+    }
+
+    body #student-codes-print-wrapper .pdf-grid-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        min-height: 297mm !important;
+        padding: 10mm !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        overflow: hidden !important;
+        page-break-before: auto !important;
+        break-before: auto !important;
+        page-break-after: always !important;
+        break-after: page !important;
+    }
+
+    body #student-codes-print-wrapper .barcode-grid-container.barcode-grid-3x3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
+        gap: 5mm !important;
+        width: 100% !important;
+        height: 100% !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    body #student-codes-print-wrapper .barcode-card {
+        width: 100% !important;
+        height: 100% !important;
+        border: 1px solid #d0d0d0 !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    body #student-codes-print-wrapper .barcode-card svg,
+    body #student-codes-print-wrapper .barcode-card img {
+        max-width: 100% !important;
+        height: 40px !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+}

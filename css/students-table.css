@@ -1,0 +1,270 @@
+/* Students List Table Styles */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 24px;
+    background: rgba(25, 20, 35, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+    min-width: 600px;
+}
+
+.students-table th {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
+    color: var(--text-primary);
+    font-weight: 700;
+    padding: 1rem;
+    border-bottom: 2px solid rgba(147, 51, 234, 0.3);
+    position: relative;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+}
+
+.students-table th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    opacity: 0.4;
+}
+
+.students-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    transition: background 0.3s ease;
+}
+
+.students-table tr:hover td {
+    background: rgba(147, 51, 234, 0.08);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.1);
+}
+
+/* Empty Row Styling */
+.row-empty td {
+    color: var(--text-secondary);
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.row-empty .student-name-cell {
+    letter-spacing: 2px;
+}
+
+.col-barcode {
+    width: 170px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px !important;
+}
+
+.student-barcode-svg {
+    max-width: 150px;
+    height: 38px;
+    display: block;
+    margin: 0 auto;
+}
+
+.student-name-cell {
+    min-width: 220px;
+    white-space: nowrap;
+}
+
+@media print {
+    .student-barcode-svg {
+        filter: brightness(0) !important; /* Force black on white for printers */
+    }
+}
+
+/* Assigned Serial Box in Modal */
+.assigned-serial-box {
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px dashed var(--primary-color);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.assigned-serial-box strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-right: 5px;
+}
+
+.students-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Serial Number Column */
+.col-id { width: 60px; text-align: center; font-weight: bold; color: var(--text-secondary); }
+
+/* Phone & Join Date Columns */
+.col-phone {
+    width: 130px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-family: 'Cairo', sans-serif;
+}
+
+.col-join-date { 
+    width: 130px; 
+    text-align: center; 
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Actions Column */
+.col-actions { width: 150px; }
+
+.action-btns-group {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+.table-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.edit-btn-table {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.edit-btn-table:hover {
+    background: #3b82f6;
+    color: white;
+    transform: scale(1.1);
+}
+
+.delete-btn-table {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.delete-btn-table:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+.manual-expel-btn {
+    background: rgba(190, 24, 93, 0.12);
+    color: #ec4899;
+}
+
+.manual-expel-btn:hover {
+    background: #be185d;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Search Row Highlight */
+.row-exact-match td {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-bottom: 2px solid #10b981 !important;
+    font-weight: 700;
+}
+
+.row-exact-match .col-id {
+    color: #10b981;
+}
+
+/* removed .search-container {} */
+/* removed .search-wrapper {} */
+/* removed .search-icon {} */
+/* removed .search-wrapper input {} */
+/* removed .search-wrapper input::placeholder {} */
+/* removed .clear-search-btn {} */
+/* removed .clear-search-btn:hover {} */
+/* removed .mode-selection tr {} */
+/* removed .row-selected td {} */
+/* removed .col-checkbox {} */
+/* removed .custom-checkbox {} */
+/* removed .custom-checkbox input {} */
+/* removed .checkmark {} */
+/* removed .custom-checkbox:hover input ~ .checkmark {} */
+/* removed .custom-checkbox input:checked ~ .checkmark {} */
+/* removed .checkmark:after {} */
+/* removed .custom-checkbox input:checked ~ .checkmark:after {} */
+/* removed .custom-checkbox .checkmark:after {} */
+/* removed .custom-checkbox.disabled {} */
+/* removed .floating-confirm-bar {} */
+/* removed .floating-confirm-bar span {} */
+/* removed .confirm-btns {} */
+/* removed .confirm-btn {} */
+/* removed .confirm-btn.danger {} */
+/* removed .confirm-btn.secondary {} */
+/* removed .confirm-btn:hover {} */
+/* removed .payments-table-wrapper {} */
+/* removed .payments-table {} */
+/* removed .payments-table thead {} */
+/* removed .payments-table th {} */
+/* removed .payments-table tbody tr {} */
+/* removed .payments-table tbody tr:hover {} */
+/* removed .payments-table td {} */
+/* removed .col-serial {} */
+/* removed .col-student-name {} */
+/* removed .col-due, .col-advance, .col-payment-status {} */
+/* removed .col-actions {} */
+/* removed .dev-badge {} */
+/* removed .dev-badge.locked {} */
+/* removed .payment-actions-group {} */
+/* removed .payment-action-btn {} */
+/* removed .edit-payment-btn {} */
+/* removed .edit-payment-btn:hover {} */
+/* removed .delete-payment-btn {} */
+/* removed .delete-payment-btn:hover {} */
+/* removed .payment-control-cell {} */
+/* removed .month-name-tag {} */
+/* removed .payment-action-buttons {} */
+/* removed .register-payment-btn, .mark-absent-btn {} */
+/* removed .register-payment-btn:hover, .mark-absent-btn:hover {} */
+/* removed .month-status-pill {} */
+/* removed .month-status-pill.paid {} */
+/* removed .month-status-pill.absent {} */
+/* removed .date-display-box {} */
+/* removed .date-display-box i {} */
+/* removed .month-display-btn {} */
+/* removed .month-display-btn:hover {} */
+/* removed .term-selection-container {} */
+/* removed .term-btn {} */
+/* removed .term-btn i {} */
+/* removed .term-btn:hover {} */
+/* removed .term-btn.first-term, .term-btn.second-term {} */
+/* removed .month-selection-modal {} */
+/* removed .months-grid {} */
+/* removed .month-card, .month-card i, .month-card span {} */
+/* removed .month-card:hover:not(.disabled) {} */
+/* removed .month-card.selected {} */
+/* removed .month-card.disabled {} */
+/* removed .locked-badge {} */
+/* removed .term-block {} */
+/* removed .set-start-month-btn, .set-start-month-btn:hover {} */
+/* removed .start-month-display, .start-month-display i {} */
+/* removed .vacation-badge, .due-month-badge, .current-month-badge, .arrears-amount {} */
+/* removed .arrears-highlight {} */
