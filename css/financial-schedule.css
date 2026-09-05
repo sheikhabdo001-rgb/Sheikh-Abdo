@@ -1,0 +1,365 @@
+/* Schedule Data Table - Cyberpunk Neon Dashboard */
+
+.schedule-table-container {
+    width: 100%;
+    padding: 1.5rem !important;
+    animation: fadeInUp 0.6s ease;
+    background: rgba(25, 20, 35, 0.4);
+}
+
+/*
+ * The dashboard schedule is a wide data surface, not a grid item that
+ * should shrink its table to fit a narrow parent. Keep the surface at the
+ * available width and let the table scroll only when the viewport is
+ * genuinely narrower than its readable minimum.
+ */
+.dashboard-schedule-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dashboard-table {
+    width: 100% !important;
+    min-width: 1000px;
+}
+
+.schedule-sidebar-panel {
+    width: 300px;
+    flex-shrink: 0;
+    padding: 1.5rem !important;
+    position: sticky;
+    top: 100px;
+    background: rgba(25, 20, 35, 0.5);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+}
+
+.sidebar-header-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.sidebar-filters-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.schedule-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 20px;
+    background: rgba(15, 12, 25, 0.4);
+    border: 1px solid rgba(147, 51, 234, 0.15);
+}
+
+.schedule-data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: right;
+    min-width: 800px;
+}
+
+.schedule-data-table thead {
+    background: rgba(147, 51, 234, 0.08);
+}
+
+.schedule-data-table th {
+    padding: 18px 20px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #ffffff;
+    text-align: right;
+    border-bottom: 2px solid rgba(147, 51, 234, 0.3);
+}
+
+.schedule-data-table th:first-child { border-radius: 20px 0 0 0; }
+.schedule-data-table th:last-child { border-radius: 0 20px 0 0; }
+
+.schedule-data-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.schedule-data-table tbody tr:hover {
+    background: rgba(147, 51, 234, 0.05);
+}
+
+.schedule-data-table td {
+    padding: 14px 18px; /* Increased vertical padding */
+    color: #b4b4d3;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.time-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(147, 51, 234, 0.1);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+    border-radius: 50px;
+    color: var(--secondary-color);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 2px;
+}
+
+/* Column Widths */
+.col-class-name {
+    width: 25%;
+    min-width: 200px;
+}
+
+.col-group-name {
+    width: 20%;
+    min-width: 180px;
+}
+
+.col-days-timing {
+    width: 40%;
+    min-width: 300px;
+}
+
+.col-actions {
+    width: 15%;
+    min-width: 140px;
+    text-align: center;
+}
+
+/* Class Name Cell with Rowspan */
+.class-name-cell {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.08), rgba(192, 132, 252, 0.05));
+    border-left: 3px solid #9333ea;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(147, 51, 234, 0.05);
+}
+
+.class-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 0 8px rgba(147, 51, 234, 0.4);
+}
+
+.class-name-wrapper i {
+    font-size: 1.5rem;
+    color: #c084fc;
+    filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.6));
+}
+
+.add-group-table-btn {
+    background: rgba(147, 51, 234, 0.1);
+    border: 2px dashed rgba(147, 51, 234, 0.5);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #c084fc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-shadow: 0 0 8px rgba(192, 132, 252, 0.3);
+}
+
+.add-group-table-btn:hover {
+    background: linear-gradient(135deg, #9333ea, #c084fc);
+    border-color: #c084fc;
+    color: white;
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
+}
+
+/* Group Name Cell */
+.group-name-cell {
+    font-weight: 800;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+}
+
+.group-name-cell i {
+    color: #c084fc;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.5));
+}
+
+/* Days & Timing Cell - Glowing Digital Badge Design */
+.days-timing-cell {
+    color: #b4b4d3;
+    font-weight: 700;
+    line-height: 1.8;
+    font-family: 'Cairo', 'Tajawal', monospace;
+}
+
+.days-timing-cell::before {
+    content: '⏰';
+    margin-left: 8px;
+    filter: drop-shadow(0 0 4px rgba(147, 51, 234, 0.4));
+}
+
+/* Create inline badge style for timing displays */
+.schedule-data-table .days-timing-cell {
+    background: linear-gradient(90deg, rgba(147, 51, 234, 0.08), transparent);
+    border-right: 2px solid rgba(147, 51, 234, 0.2);
+    padding-right: 16px;
+    position: relative;
+}
+
+.schedule-data-table .days-timing-cell::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: linear-gradient(180deg, #9333ea, #c084fc);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
+}
+
+/* Actions Cell */
+.actions-cell {
+    text-align: center;
+}
+
+.table-action-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.table-edit-btn,
+.table-delete-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.table-edit-btn {
+    background: rgba(147, 51, 234, 0.12);
+    color: #c084fc;
+    border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.table-edit-btn:hover {
+    background: linear-gradient(135deg, #9333ea, #c084fc);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.6), 0 4px 15px rgba(192, 132, 252, 0.4);
+    border-color: transparent;
+}
+
+.table-delete-btn {
+    background: rgba(220, 38, 38, 0.12);
+    color: #f87171;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.table-delete-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.6), 0 4px 15px rgba(239, 68, 68, 0.4);
+    border-color: transparent;
+}
+
+.loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(147, 51, 234, 0.15);
+    border-top-color: #c084fc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Neon Glow Keyframe for Interactive Elements */
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(147, 51, 234, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(147, 51, 234, 0.4), 0 0 30px rgba(192, 132, 252, 0.2);
+    }
+}
+
+.schedule-table-wrapper {
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .schedule-table-container {
+        padding: 1.5rem !important;
+    }
+    
+    .schedule-data-table th,
+    .schedule-data-table td {
+        padding: 1rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .class-name-wrapper {
+        font-size: 0.95rem;
+    }
+    
+    .table-action-btns {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .schedule-table-wrapper {
+        border-radius: 15px;
+    }
+    
+    .schedule-data-table th,
+    .schedule-data-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .add-group-table-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+}

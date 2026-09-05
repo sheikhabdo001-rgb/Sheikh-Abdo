@@ -1,0 +1,588 @@
+/*
+ * Strict light-theme contrast layer.
+ *
+ * This file is loaded after the component styles so that legacy dark
+ * glassmorphism backgrounds cannot leak into the light theme. Functional
+ * badges and action buttons are intentionally not flattened here.
+ */
+@media screen {
+    html[data-theme="light"] {
+        --bg-main: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-card: #ffffff;
+        --bg-table-header: #f3e8ff;
+        --bg-hover: #faf5ff;
+
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+
+        --border-color: #e2e8f0;
+        --border-accent: #c084fc;
+        --glass-border: #e5e7eb;
+
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+        /* Keep the existing variable names in sync with the strict palette. */
+        --bg-color: var(--bg-main);
+        --surface-color: var(--bg-surface);
+        --glass-bg: var(--bg-surface);
+        --shadow: rgba(15, 23, 42, 0.12);
+    }
+
+    html[data-theme="light"] body,
+    html[data-theme="light"] #app {
+        background-color: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+    }
+
+    /* Shared panels, cards, dashboards, and table containers. */
+    html[data-theme="light"] .card,
+    html[data-theme="light"] .container,
+    html[data-theme="light"] .table-container,
+    html[data-theme="light"] .category-box,
+    html[data-theme="light"] .schedule-container,
+    html[data-theme="light"] .schedule-class-card,
+    html[data-theme="light"] .schedule-sidebar-panel,
+    html[data-theme="light"] .summary-ribbon,
+    html[data-theme="light"] .stage-breakdown-row,
+    html[data-theme="light"] .group-card,
+    html[data-theme="light"] .stage-card,
+    html[data-theme="light"] .month-card,
+    html[data-theme="light"] .start-month-card,
+    html[data-theme="light"] .selection-group-card,
+    html[data-theme="light"] .print-option-card,
+    html[data-theme="light"] .reset-choice-card,
+    html[data-theme="light"] .debt-item-card,
+    html[data-theme="light"] .rpt-debt-card,
+    html[data-theme="light"] .rpt-sum-card,
+    html[data-theme="light"] .students-table-wrapper,
+    html[data-theme="light"] .glass-panel,
+    html[data-theme="light"] .info-card,
+    html[data-theme="light"] .mini-stage-card,
+    html[data-theme="light"] .table-responsive,
+    html[data-theme="light"] .table-responsive-wrapper,
+    html[data-theme="light"] .students-data-container,
+    html[data-theme="light"] .schedule-table-container,
+    html[data-theme="light"] .schedule-table-wrapper,
+    html[data-theme="light"] .group-attendance-archive-table-container,
+    html[data-theme="light"] .non-payers-table-container,
+    html[data-theme="light"] .non-payers-table-wrapper,
+    html[data-theme="light"] .exam-grades-wrapper,
+    html[data-theme="light"] .exam-table-wrapper,
+    html[data-theme="light"] .academic-table-wrapper,
+    html[data-theme="light"] .hub-table-wrapper,
+    html[data-theme="light"] .hub-results-container,
+    html[data-theme="light"] .premium-ledger-container,
+    html[data-theme="light"] .analytics-card,
+    html[data-theme="light"] .analytics-summary-card,
+    html[data-theme="light"] .kpi-card,
+    html[data-theme="light"] .chart-card,
+    html[data-theme="light"] .profile-header-card,
+    html[data-theme="light"] .profile-controls,
+    html[data-theme="light"] .profile-history-table-container,
+    html[data-theme="light"] .rep-panel,
+    html[data-theme="light"] .glass-modal,
+    html[data-theme="light"] .notification-card,
+    html[data-theme="light"] .search-container,
+    html[data-theme="light"] .search-box-container,
+    html[data-theme="light"] .search-hub-container,
+    html[data-theme="light"] .action-control-box,
+    html[data-theme="light"] .records-controls-container,
+    html[data-theme="light"] .term-selection-container,
+    html[data-theme="light"] .attendance-student-container,
+    html[data-theme="light"] .backup-history-container,
+    html[data-theme="light"] .exam-tabs-container-outer,
+    html[data-theme="light"] .single-exam-filter-toolbar,
+    html[data-theme="light"] .exam-student-search-box,
+    html[data-theme="light"] .settings-sidebar,
+    html[data-theme="light"] .glass-header,
+    html[data-theme="light"] .nav-container,
+    html[data-theme="light"] .login-box {
+        background: var(--bg-surface) !important;
+        background-image: none !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: var(--shadow-md) !important;
+        color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] .login-container {
+        background: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] #dashboardSection h1,
+    html[data-theme="light"] #dashboardSection h2,
+    html[data-theme="light"] #dashboardSection h3,
+    html[data-theme="light"] #dashboardSection h4,
+    html[data-theme="light"] #dashboardSection h5,
+    html[data-theme="light"] #dashboardSection h6 {
+        color: var(--text-primary) !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .profile-history-table-container .table-responsive {
+        box-shadow: none !important;
+    }
+
+    /* Text on surfaces. Explicitly listed hard-coded white text is corrected
+       without changing white text on vibrant action buttons. */
+    html[data-theme="light"] .card h1,
+    html[data-theme="light"] .card h2,
+    html[data-theme="light"] .card h3,
+    html[data-theme="light"] .card h4,
+    html[data-theme="light"] .card h5,
+    html[data-theme="light"] .card h6,
+    html[data-theme="light"] .card p,
+    html[data-theme="light"] .card-content p,
+    html[data-theme="light"] .card-content h3,
+    html[data-theme="light"] .profile-name-title,
+    html[data-theme="light"] .meta-item strong,
+    html[data-theme="light"] .contact-pill strong,
+    html[data-theme="light"] .clickable-student-link,
+    html[data-theme="light"] .locked-state-placeholder h2,
+    html[data-theme="light"] .hero-title-gradient,
+    html[data-theme="light"] .notification-message {
+        color: var(--text-primary) !important;
+        text-shadow: none;
+    }
+
+    html[data-theme="light"] .card label,
+    html[data-theme="light"] .card small,
+    html[data-theme="light"] .card .subtitle,
+    html[data-theme="light"] .card .muted,
+    html[data-theme="light"] .meta-item,
+    html[data-theme="light"] .contact-pill span,
+    html[data-theme="light"] .hero-subtitle,
+    html[data-theme="light"] .filter-group h3,
+    html[data-theme="light"] .kpi-label,
+    html[data-theme="light"] .kpi-sub,
+    html[data-theme="light"] .chart-hint,
+    html[data-theme="light"] .rep-panel-count {
+        color: var(--text-secondary) !important;
+    }
+
+    html[data-theme="light"] .clickable-student-link:hover {
+        color: #6d28d9 !important;
+    }
+
+    html[data-theme="light"] .locked-state-placeholder {
+        background: #ffffff !important;
+        border-color: #c084fc !important;
+        box-shadow: var(--shadow-md) !important;
+    }
+
+    /* Tables: white rows, violet headers, quiet dividers, and a soft hover. */
+    html[data-theme="light"] table,
+    html[data-theme="light"] .students-table,
+    html[data-theme="light"] .attendance-table,
+    html[data-theme="light"] .profile-history-table,
+    html[data-theme="light"] .hub-results-table,
+    html[data-theme="light"] .group-attendance-summary-table,
+    html[data-theme="light"] .group-attendance-detail-table,
+    html[data-theme="light"] .group-attendance-archive-table,
+    html[data-theme="light"] .schedule-table,
+    html[data-theme="light"] .exams-table,
+    html[data-theme="light"] .exam-grades-table,
+    html[data-theme="light"] .non-payers-table,
+    html[data-theme="light"] .records-master-table,
+    html[data-theme="light"] .profile-exams-table,
+    html[data-theme="light"] .breakdown-table,
+    html[data-theme="light"] .rep-table,
+    html[data-theme="light"] .rpt-table {
+        background-color: #ffffff !important;
+        color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] table thead,
+    html[data-theme="light"] table thead tr {
+        background-color: var(--bg-table-header) !important;
+    }
+
+    html[data-theme="light"] table th,
+    html[data-theme="light"] table thead th,
+    html[data-theme="light"] .premium-ledger th {
+        background: var(--bg-table-header) !important;
+        background-image: none !important;
+        color: #5b21b6 !important;
+        border-bottom: 2px solid #e9d5ff !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] table td,
+    html[data-theme="light"] table tbody tr td,
+    html[data-theme="light"] .premium-ledger td {
+        background: #ffffff !important;
+        color: var(--text-primary) !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        border-top-color: #f1f5f9 !important;
+        border-left-color: #f1f5f9 !important;
+        border-right-color: #f1f5f9 !important;
+        box-shadow: none !important;
+    }
+
+    html[data-theme="light"] table tbody tr:hover td,
+    html[data-theme="light"] .premium-ledger tbody tr.premium-row:hover td {
+        background: var(--bg-hover) !important;
+        color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] .students-table th::after,
+    html[data-theme="light"] .attendance-table thead th::after,
+    html[data-theme="light"] .profile-history-table thead th::after,
+    html[data-theme="light"] .hub-results-table thead th::after {
+        background: #c084fc !important;
+        opacity: 0.55;
+    }
+
+    /* Preserve meaningful row states above the generic white table row. */
+    html[data-theme="light"] table tbody tr.row-exact-match td,
+    html[data-theme="light"] table tbody tr.search-highlight td {
+        background: rgba(16, 185, 129, 0.12) !important;
+        border-bottom-color: rgba(16, 185, 129, 0.35) !important;
+    }
+
+    html[data-theme="light"] .stage-group-header td {
+        background: #f5f3ff !important;
+        color: #6d28d9 !important;
+        border-color: #c084fc !important;
+    }
+
+    html[data-theme="light"] .stage-option input[type="checkbox"]:checked + .stage-card {
+        background: #f3e8ff !important;
+        border-color: #9333ea !important;
+        box-shadow: 0 4px 12px rgba(147, 51, 234, 0.18) !important;
+    }
+
+    html[data-theme="light"] .stage-option input[type="checkbox"]:checked + .stage-card i {
+        color: #7e22ce !important;
+    }
+
+    html[data-theme="light"] .month-card.selected {
+        background: linear-gradient(135deg, #7c3aed, #9333ea) !important;
+        color: #ffffff !important;
+    }
+
+    html[data-theme="light"] .month-card.selected i,
+    html[data-theme="light"] .month-card.selected span {
+        color: #ffffff !important;
+    }
+
+    html[data-theme="light"] .month-card.disabled {
+        background: #f1f5f9 !important;
+        color: var(--text-muted) !important;
+    }
+
+    html[data-theme="light"] .col-phone,
+    html[data-theme="light"] .col-join-date,
+    html[data-theme="light"] .col-id,
+    html[data-theme="light"] .month-cell,
+    html[data-theme="light"] .muted-cell {
+        color: var(--text-secondary) !important;
+    }
+
+    /* Payment ledger rows use a separate card-like row background. */
+    html[data-theme="light"] .premium-ledger tbody tr.premium-row {
+        background: #ffffff !important;
+        border-color: #e5e7eb !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    html[data-theme="light"] .premium-ledger td:first-child,
+    html[data-theme="light"] .premium-ledger td:last-child {
+        border-color: #f1f5f9 !important;
+    }
+
+    html[data-theme="light"] .col-student-name .name-wrapper {
+        background: none !important;
+        color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] .class-name-wrapper,
+    html[data-theme="light"] .group-name-cell {
+        color: var(--text-primary) !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .days-timing-cell,
+    html[data-theme="light"] .schedule-data-table td {
+        color: var(--text-secondary) !important;
+    }
+
+    /* Schedule / timetable contrast fixes. The schedule renderer currently
+       places the day text in the first span with an inline white color, so
+       the important rule below intentionally overrides that inline value. */
+    html[data-theme="light"] .schedule-container,
+    html[data-theme="light"] .schedule-row,
+    html[data-theme="light"] .schedule-card,
+    html[data-theme="light"] .schedule-table-container,
+    html[data-theme="light"] .schedule-table-wrapper {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+    }
+
+    html[data-theme="light"] .schedule-days,
+    html[data-theme="light"] .days-text,
+    html[data-theme="light"] .days-list,
+    html[data-theme="light"] .days-timing-cell > span:first-child,
+    html[data-theme="light"] .schedule-data-table .days-timing-cell > span:not(.time-pill) {
+        color: #1e1b4b !important;
+        font-weight: 700 !important;
+    }
+
+    html[data-theme="light"] .time-badge,
+    html[data-theme="light"] .time-slot,
+    html[data-theme="light"] .time-pill {
+        background-color: #f3e8ff !important;
+        color: #6b21a8 !important;
+        border: 1px solid #d8b4fe !important;
+        font-weight: 600 !important;
+    }
+
+    html[data-theme="light"] .group-name,
+    html[data-theme="light"] .group-title,
+    html[data-theme="light"] .group-name-cell,
+    html[data-theme="light"] .class-name-wrapper {
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .ribbon-item,
+    html[data-theme="light"] .meta-item,
+    html[data-theme="light"] .contact-pill,
+    html[data-theme="light"] .pie-legend-item {
+        background: #ffffff !important;
+        border-color: #e5e7eb !important;
+        color: var(--text-secondary) !important;
+    }
+
+    html[data-theme="light"] .time-pill {
+        background: #f3e8ff !important;
+        border-color: #d8b4fe !important;
+        color: #6b21a8 !important;
+    }
+
+    /* .time-pill is also reused for green student-code badges elsewhere. */
+    html[data-theme="light"] a.time-pill.student-name-link,
+    html[data-theme="light"] .hub-results-table .time-pill {
+        background: #d1fae5 !important;
+        border-color: #34d399 !important;
+        color: #047857 !important;
+        -webkit-text-fill-color: #047857 !important;
+    }
+
+    html[data-theme="light"] .add-group-table-btn {
+        background: #f3e8ff !important;
+        border-color: #a855f7 !important;
+        color: #6d28d9 !important;
+        text-shadow: none !important;
+    }
+
+    html[data-theme="light"] .exams-table th:nth-child(1),
+    html[data-theme="light"] .exams-table td:nth-child(1),
+    html[data-theme="light"] .exams-table th:nth-child(2),
+    html[data-theme="light"] .exams-table td:nth-child(2) {
+        background: #ffffff !important;
+        border-left-color: #e2e8f0 !important;
+    }
+
+    /* Inputs, selects, textareas, search bars, and filter fields. */
+    html[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    html[data-theme="light"] select,
+    html[data-theme="light"] textarea,
+    html[data-theme="light"] .search-bar,
+    html[data-theme="light"] .search-wrapper,
+    html[data-theme="light"] .search-input-wrapper,
+    html[data-theme="light"] .mini-search,
+    html[data-theme="light"] .rep-search,
+    html[data-theme="light"] .copy-input-wrapper,
+    html[data-theme="light"] .fee-input-wrapper,
+    html[data-theme="light"] .session-filter-field,
+    html[data-theme="light"] .group-session-filter,
+    html[data-theme="light"] .date-filter-wrapper {
+        background: #ffffff !important;
+        color: var(--text-primary) !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    html[data-theme="light"] .search-wrapper input,
+    html[data-theme="light"] .mini-search input,
+    html[data-theme="light"] .rep-search input {
+        background: #ffffff !important;
+        color: var(--text-primary) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+    }
+
+    html[data-theme="light"] input::placeholder,
+    html[data-theme="light"] textarea::placeholder,
+    html[data-theme="light"] .search-wrapper input::placeholder,
+    html[data-theme="light"] .mini-search input::placeholder,
+    html[data-theme="light"] .rep-search input::placeholder {
+        color: var(--text-muted) !important;
+        opacity: 1 !important;
+    }
+
+    html[data-theme="light"] input:focus,
+    html[data-theme="light"] select:focus,
+    html[data-theme="light"] textarea:focus {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15) !important;
+        outline: none;
+    }
+
+    html[data-theme="light"] option {
+        background: #ffffff;
+        color: var(--text-primary);
+    }
+
+    html[data-theme="light"] .exam-tab-btn,
+    html[data-theme="light"] .exam-filter-btn {
+        background: #ffffff !important;
+        color: var(--text-secondary) !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    html[data-theme="light"] .exam-tab-btn:hover:not(.active),
+    html[data-theme="light"] .exam-filter-btn:hover:not(.active) {
+        background: #faf5ff !important;
+        color: #5b21b6 !important;
+    }
+
+    html[data-theme="light"] .exam-tab-btn.active,
+    html[data-theme="light"] .exam-filter-btn.active {
+        background: linear-gradient(135deg, #7c3aed, #9333ea) !important;
+        color: #ffffff !important;
+        border-color: #7c3aed !important;
+    }
+
+    html[data-theme="light"] .exam-current-view-banner {
+        background: #fffbeb !important;
+        color: #92400e !important;
+        border-color: #fbbf24 !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    html[data-theme="light"] .exam-post-finish-notice {
+        background: #fffbeb !important;
+        color: #92400e !important;
+        border-color: #fbbf24 !important;
+    }
+
+    html[data-theme="light"] .leaderboard-rank-badge {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        border-color: #f59e0b !important;
+    }
+
+    html[data-theme="light"] .exam-status-badge {
+        background: #d1fae5 !important;
+        color: #047857 !important;
+        border-color: #34d399 !important;
+    }
+
+    /* Keep vibrant functional controls and badges high-contrast on white. */
+    html[data-theme="light"] .profile-code-badge,
+    html[data-theme="light"] .badge-present,
+    html[data-theme="light"] .status-badge.attended,
+    html[data-theme="light"] .status-present,
+    html[data-theme="light"] .month-status-pill.paid {
+        color: #047857 !important;
+        background: #d1fae5 !important;
+        border-color: #34d399 !important;
+    }
+
+    html[data-theme="light"] .badge-absent,
+    html[data-theme="light"] .status-badge.absent,
+    html[data-theme="light"] .status-absent,
+    html[data-theme="light"] .month-status-pill.absent {
+        color: #b91c1c !important;
+        background: #fee2e2 !important;
+        border-color: #f87171 !important;
+    }
+
+    html[data-theme="light"] .edit-btn-table,
+    html[data-theme="light"] .edit-payment-btn {
+        color: #1d4ed8 !important;
+        background: #dbeafe !important;
+        border-color: #93c5fd !important;
+    }
+
+    html[data-theme="light"] .delete-btn-table,
+    html[data-theme="light"] .delete-payment-btn {
+        color: #b91c1c !important;
+        background: #fee2e2 !important;
+        border-color: #fca5a5 !important;
+    }
+
+    html[data-theme="light"] .cat-badge {
+        color: #6d28d9 !important;
+        background: #f3e8ff !important;
+    }
+
+    html[data-theme="light"] .cat-badge.cat-rent {
+        color: #0e7490 !important;
+        background: #cffafe !important;
+    }
+
+    html[data-theme="light"] .cat-badge.cat-salaries {
+        color: #047857 !important;
+        background: #d1fae5 !important;
+    }
+
+    html[data-theme="light"] .cat-badge.cat-printing {
+        color: #c2410c !important;
+        background: #ffedd5 !important;
+    }
+
+    html[data-theme="light"] .cat-badge.cat-bills {
+        color: #1d4ed8 !important;
+        background: #dbeafe !important;
+    }
+
+    html[data-theme="light"] .status-badge-vibrant {
+        box-shadow: none !important;
+    }
+
+    html[data-theme="light"] .progress-container {
+        background: #e2e8f0 !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    html[data-theme="light"] .progress-text {
+        color: #ffffff !important;
+    }
+
+    /*
+     * Final light-mode text safety net.
+     *
+     * Some legacy templates still carry white colors inline or through
+     * dark-theme selectors. Keep the two explicit solid-control exceptions
+     * (and their descendants) readable on their colored backgrounds.
+     */
+    html[data-theme="light"] *:not(.btn-primary):not(.btn-primary *):not(.badge-solid):not(.badge-solid *) {
+        color: #000000 !important;
+    }
+
+    /* Schedule and table content must always remain crisp black in light mode. */
+    html[data-theme="light"] .schedule-container *,
+    html[data-theme="light"] .schedule-row *,
+    html[data-theme="light"] .schedule-card *,
+    html[data-theme="light"] table *,
+    html[data-theme="light"] .schedule-days,
+    html[data-theme="light"] .days-text,
+    html[data-theme="light"] .days-list,
+    html[data-theme="light"] .time-slot,
+    html[data-theme="light"] .group-name,
+    html[data-theme="light"] .group-title {
+        color: #000000 !important;
+    }
+
+    html[data-theme="light"] table td,
+    html[data-theme="light"] table th {
+        color: #000000 !important;
+        font-weight: 600 !important;
+    }
+}

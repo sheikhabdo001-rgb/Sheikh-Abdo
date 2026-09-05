@@ -1,0 +1,133 @@
+/* Glassmorphic Notification System */
+
+.notification-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.notification-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notification-card {
+    background: rgba(25, 20, 35, 0.85);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 450px;
+    padding: 2rem;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8);
+    transform: scale(0.9);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid rgba(147, 51, 234, 0.3);
+}
+
+.notification-overlay.active .notification-card {
+    transform: scale(1);
+}
+
+/* Notification Types */
+.notification-card.success { border-color: var(--success-color); box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+.notification-card.warning { border-color: var(--warning-color); box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); }
+.notification-card.error { border-color: var(--danger-color); box-shadow: 0 0 30px rgba(239, 68, 68, 0.2); }
+
+.notification-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    animation: iconBounce 0.6s ease;
+}
+
+.success .notification-icon { color: var(--success-color); filter: drop-shadow(0 0 10px var(--success-color)); }
+.warning .notification-icon { color: var(--warning-color); filter: drop-shadow(0 0 10px var(--warning-color)); }
+.error .notification-icon { color: var(--danger-color); filter: drop-shadow(0 0 10px var(--danger-color)); }
+
+.notification-message {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.notification-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.notif-btn {
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.notif-btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 8px 20px rgba(147, 51, 234, 0.3);
+}
+
+.notif-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.notif-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+}
+
+/* Progress Bar */
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: var(--primary-color);
+    width: 100%;
+    transform-origin: left;
+}
+
+.success .notification-progress { background: var(--success-color); }
+.warning .notification-progress { background: var(--warning-color); }
+.error .notification-progress { background: var(--danger-color); }
+
+@keyframes iconBounce {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shrinkProgress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+.shrink-anim {
+    animation: shrinkProgress 4s linear forwards;
+}
