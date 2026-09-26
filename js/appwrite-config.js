@@ -85,7 +85,7 @@ window.AppwriteConfig = (() => {
                 const studentId = student?.id ?? student?.studentId;
                 if (studentId == null) return;
                 const familyData = {};
-                ['family_group_id', 'relativeStudentIds', 'link_id'].forEach(field => {
+                ['family_group_id', 'relativeStudentIds', 'link_id', 'isDualRegistered', 'dualStage', 'dualStageId'].forEach(field => {
                     if (Object.prototype.hasOwnProperty.call(student, field)) {
                         familyData[field] = student[field];
                     }
@@ -99,12 +99,10 @@ window.AppwriteConfig = (() => {
                 const prefs = user?.prefs || {};
                 const savedLinks = prefs[familyLinksPreferenceKey];
                 await this.account.updatePrefs({
-                    prefs: {
-                        ...prefs,
-                        [familyLinksPreferenceKey]: {
-                            ...(savedLinks && typeof savedLinks === 'object' ? savedLinks : {}),
-                            ...updates
-                        }
+                    ...prefs,
+                    [familyLinksPreferenceKey]: {
+                        ...(savedLinks && typeof savedLinks === 'object' ? savedLinks : {}),
+                        ...updates
                     }
                 });
             });
@@ -215,27 +213,41 @@ window.AppwriteConfig = (() => {
 
             const localTenantData = window.TenantStore?.getCurrentTenantData?.() || {};
             const localFamilyLinks = new Map();
-            Object.entries(localTenantData)
-                .filter(([key]) => key.startsWith('students_'))
-                .forEach(([, value]) => {
-                    if (typeof value !== 'string') return;
-                    let students;
-                    try { students = JSON.parse(value); } catch (error) { return; }
-                    if (!Array.isArray(students)) return;
-                    students.forEach(student => {
-                        const studentId = student?.id ?? student?.studentId;
-                        if (studentId == null) return;
-                        const familyData = {};
-                        ['family_group_id', 'relativeStudentIds', 'link_id'].forEach(field => {
-                            if (Object.prototype.hasOwnProperty.call(student, field)) {
-                                familyData[field] = student[field];
-                            }
+            const localDualStudents = new Map();
+            const localStudentIds = new Set();
+            const collectLocalStudents = (studentKey, value, isBackup = false) => {
+                if (typeof value !== 'string') return;
+                let students;
+                try { students = JSON.parse(value); } catch (error) { return; }
+                if (!Array.isArray(students)) return;
+                students.forEach(student => {
+                    const studentId = student?.id ?? student?.studentId;
+                    if (studentId == null) return;
+                    const id = String(studentId);
+                    if (isBackup && localStudentIds.has(id)) return;
+                    localStudentIds.add(id);
+                    if (student.isDualRegistered && !student.is_deleted && !student.isEmptySlot && !student.is_empty_slot) {
+                        const gradeContext = studentKey.match(/^students_(.+)_([0-9]+)$/);
+                        localDualStudents.set(id, {
+                            ...student,
+                            stageId: student.stageId || gradeContext?.[1],
+                            gradeId: student.gradeId || (gradeContext ? `${gradeContext[1]}_${gradeContext[2]}` : '')
                         });
-                        if (Object.keys(familyData).length) {
-                            localFamilyLinks.set(String(studentId), familyData);
+                    }
+                    const familyData = {};
+                    ['family_group_id', 'relativeStudentIds', 'link_id', 'isDualRegistered', 'dualStage', 'dualStageId'].forEach(field => {
+                        if (Object.prototype.hasOwnProperty.call(student, field)) {
+                            familyData[field] = student[field];
                         }
                     });
+                    if (Object.keys(familyData).length && (!isBackup || !localFamilyLinks.has(id))) {
+                        localFamilyLinks.set(id, familyData);
+                    }
                 });
+            };
+            Object.entries(localTenantData)
+                .filter(([key]) => key.startsWith('students_'))
+                .forEach(([key, value]) => collectLocalStudents(key, value));
 
             const backupHistory = (() => {
                 try {
@@ -252,24 +264,7 @@ window.AppwriteConfig = (() => {
                     try { snapshot = JSON.parse(backup.data || '{}'); } catch (error) { return; }
                     Object.entries(snapshot)
                         .filter(([key]) => key.startsWith('students_'))
-                        .forEach(([, value]) => {
-                            let students;
-                            try { students = JSON.parse(value || '[]'); } catch (error) { return; }
-                            if (!Array.isArray(students)) return;
-                            students.forEach(student => {
-                                const studentId = student?.id ?? student?.studentId;
-                                if (studentId == null || localFamilyLinks.has(String(studentId))) return;
-                                const familyData = {};
-                                ['family_group_id', 'relativeStudentIds', 'link_id'].forEach(field => {
-                                    if (Object.prototype.hasOwnProperty.call(student, field)) {
-                                        familyData[field] = student[field];
-                                    }
-                                });
-                                if (Object.keys(familyData).length) {
-                                    localFamilyLinks.set(String(studentId), familyData);
-                                }
-                            });
-                        });
+                        .forEach(([key, value]) => collectLocalStudents(key, value, true));
                 });
 
             const cloudFamilyLinks = accountUser?.prefs?.[familyLinksPreferenceKey];
@@ -278,15 +273,43 @@ window.AppwriteConfig = (() => {
                     ? Object.entries(cloudFamilyLinks)
                     : []
             );
-            const missingCloudLinks = Array.from(localFamilyLinks, ([id, familyData]) => ({ id, ...familyData }))
-                .filter(student => !familyLinks.has(String(student.id)));
+            const missingCloudLinks = Array.from(localFamilyLinks, ([id, familyData]) => {
+                const cloudData = familyLinks.get(id) || {};
+                const missingFields = Object.fromEntries(
+                    Object.entries(familyData).filter(([field]) => !Object.prototype.hasOwnProperty.call(cloudData, field))
+                );
+                return { id, ...missingFields };
+            }).filter(student => Object.keys(student).length > 1);
             if (missingCloudLinks.length) {
                 try {
                     await this.syncFamilyLinks(missingCloudLinks);
                 } catch (error) {
                     console.warn('Appwrite family-link migration failed:', error);
                 }
-                missingCloudLinks.forEach(({ id, ...familyData }) => familyLinks.set(String(id), familyData));
+                missingCloudLinks.forEach(({ id, ...familyData }) => {
+                    familyLinks.set(String(id), { ...(familyLinks.get(String(id)) || {}), ...familyData });
+                });
+            }
+
+            const cloudStudentIds = new Set(studentRows.map(row => String(row.$id)));
+            const missingDualStudents = Array.from(localDualStudents.values())
+                .filter(student => !cloudStudentIds.has(String(student.id ?? student.studentId)));
+            if (missingDualStudents.length) {
+                try {
+                    await this.syncStudents(missingDualStudents.map(student => ({ ...student, teacherId })));
+                } catch (error) {
+                    console.warn('Appwrite dual-registration migration failed:', error);
+                }
+                missingDualStudents.forEach(student => {
+                    const id = String(student.id ?? student.studentId);
+                    studentRows.push({
+                        ...student,
+                        $id: id,
+                        full_name: student.name || student.full_name || '',
+                        studentCode: student.studentCode || student.code || null,
+                        serialNumber: student.serialNumber || student.serialNo || 0
+                    });
+                });
             }
 
             // Appwrite is authoritative after login; discard stale local student copies.

@@ -17,7 +17,10 @@ window.StudentFormManager = {
     setupListeners() {
         const confirmAddBtn = document.getElementById('confirmAddStudentBtn');
         if (confirmAddBtn) {
-            confirmAddBtn.onclick = () => this.saveStudent();
+            confirmAddBtn.onclick = () => this.saveStudent().catch(error => {
+                console.error('Student cloud sync failed:', error);
+                window.notify.error('تم حفظ الطالب محلياً، لكن تعذرت مزامنته. تحقق من الاتصال ثم أعد المحاولة.');
+            });
         }
     },
 
@@ -252,13 +255,16 @@ window.StudentFormManager = {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.saveStudent();
+                    this.saveStudent().catch(error => {
+                        console.error('Student cloud sync failed:', error);
+                        window.notify.error('تم حفظ الطالب محلياً، لكن تعذرت مزامنته. تحقق من الاتصال ثم أعد المحاولة.');
+                    });
                 }
             };
         }
     },
 
-    saveStudent() {
+    async saveStudent() {
         const nameInput = document.getElementById('newStudentName');
         const phoneInput = document.getElementById('newStudentPhone');
         const parentPhoneInput = document.getElementById('newParentPhone');
@@ -395,7 +401,7 @@ window.StudentFormManager = {
                 students.push(studentData);
             }
         }
-        window.StudentStore.saveStudents(this.parent.currentStage, this.parent.currentGrade, students);
+        await window.StudentStore.saveStudents(this.parent.currentStage, this.parent.currentGrade, students);
 
         if (this.mainStudentDualReg && linkId) {
             const sId = this.mainStudentDualReg.stage;
@@ -429,12 +435,12 @@ window.StudentFormManager = {
             if (emptyIdx !== -1) targetStudents[emptyIdx] = { ...targetStudents[emptyIdx], ...newData };
             else targetStudents.push(newData);
             
-            window.StudentStore.saveStudents(sId, gIdx, targetStudents);
+            await window.StudentStore.saveStudents(sId, gIdx, targetStudents);
             window.notify.success(`تم تسجيل الطالب في "${this.mainStudentDualReg.label}" بنجاح`);
         }
 
         if (validSiblings.length > 0 && familyGroupId) {
-            relativeRecords.forEach(({ sibling: sib, existing: existingSibling, id: relativeId, index }) => {
+            for (const { sibling: sib, existing: existingSibling, id: relativeId, index } of relativeRecords) {
                 let sibStudents = window.StudentStore.getStudents(sib.stage, sib.grade);
 
                 if (existingSibling) {
@@ -451,8 +457,8 @@ window.StudentFormManager = {
                             }
                             : student
                     );
-                    window.StudentStore.saveStudents(sib.stage, sib.grade, linkedStudents);
-                    return;
+                    await window.StudentStore.saveStudents(sib.stage, sib.grade, linkedStudents);
+                    continue;
                 }
 
                 let sibLinkId = sib.dualStage ? `lnk_sib_${Date.now()}_${Math.floor(Math.random()*1000)}` : null;
@@ -488,7 +494,7 @@ window.StudentFormManager = {
                 const emptySlot = window.StudentStore.findSlotIndex(sibStudents, sibSerial);
                 if (emptySlot !== -1) sibStudents[emptySlot] = { ...sibStudents[emptySlot], ...sibData };
                 else sibStudents.push(sibData);
-                window.StudentStore.saveStudents(sib.stage, sib.grade, sibStudents);
+                await window.StudentStore.saveStudents(sib.stage, sib.grade, sibStudents);
 
                 if (sib.dualStage && sibLinkId) {
                     let targetSibStudents = window.StudentStore.getStudents(sib.dualStage.stage, sib.dualStage.grade);
@@ -510,9 +516,9 @@ window.StudentFormManager = {
                     const emptyIdx = window.StudentStore.findSlotIndex(targetSibStudents, dualSerial);
                     if (emptyIdx !== -1) targetSibStudents[emptyIdx] = { ...targetSibStudents[emptyIdx], ...sibDualData };
                     else targetSibStudents.push(sibDualData);
-                    window.StudentStore.saveStudents(sib.dualStage.stage, sib.dualStage.grade, targetSibStudents);
+                    await window.StudentStore.saveStudents(sib.dualStage.stage, sib.dualStage.grade, targetSibStudents);
                 }
-            });
+            }
             window.notify.success(`تم ربط ${validSiblings.length} قريب/أخ بنفس العائلة`);
         }
 

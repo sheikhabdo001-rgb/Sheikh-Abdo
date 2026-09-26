@@ -961,8 +961,9 @@ window.StudentStore = {
         // Update cache
         StudentsCache[`${teacherId}:${key}`] = { data: normalized, timestamp: now };
         localStorage.setItem(key, JSON.stringify(normalized));
-        window.AppwriteConfig?.syncStudents?.(normalized).catch(error => {
+        return Promise.resolve(window.AppwriteConfig?.syncStudents?.(normalized)).catch(error => {
             console.warn('Appwrite student sync failed:', error);
+            throw error;
         });
     },
     
