@@ -36,6 +36,7 @@ window.DashboardHubUI = {
             const statusData = this.getPaymentStatusData(student, realNow);
             const attendanceData = this.getAttendanceStatusData(student);
             const familyBadge = student.family_group_id ? `<span class="hub-family-badge" title="عائلة مرتبطة"><i class="fas fa-users"></i> عائلة</span>` : '';
+            const studentIdArgument = JSON.stringify(String(student.id)).replace(/"/g, '&quot;');
 
             html += `
                 <tr data-id="${student.id}" data-stage="${student.stage}" data-grade="${student.grade}">
@@ -49,7 +50,7 @@ window.DashboardHubUI = {
                                 <a href="#" class="clickable-student-link student-name-link" data-student-id="${student.id}" data-stage="${student.stage}" data-grade="${student.grade}" data-from-view="home" style="font-weight:800; color:inherit;">
                                     ${student.name}
                                 </a>
-                                <button type="button" onclick="window.DashboardHubActions.hubOpenEdit(${student.id}, '${student.stage}', ${student.grade})" 
+                                <button type="button" onclick="window.DashboardHubActions.hubOpenEdit(${studentIdArgument}, '${student.stage}', ${student.grade})" 
                                         style="background:none; border:none; color:var(--primary-color); cursor:pointer; font-size:0.8rem; padding:4px;" title="تعديل البيانات">
                                     <i class="fas fa-edit"></i>
                                 </button>
@@ -64,14 +65,14 @@ window.DashboardHubUI = {
                             ${(actionFilterVal === 'all' || actionFilterVal === 'attendance') ? `
                                 <button class="hub-quick-btn hub-btn-attendance ${(!attendanceData.activeSession || attendanceData.isAlreadyAttended) ? 'disabled' : ''}" 
                                         ${attendanceData.isAlreadyAttended ? 'style="background:var(--success-color); cursor:default;"' : ''}
-                                        onclick="window.DashboardHubActions.hubQuickAttendance(this, ${student.id}, '${student.stage}', ${student.grade}, '${attendanceData.activeSession?.name || ''}')">
+                                        onclick="window.DashboardHubActions.hubQuickAttendance(this, ${studentIdArgument}, '${student.stage}', ${student.grade}, '${attendanceData.activeSession?.name || ''}')">
                                     <i class="fas ${attendanceData.isAlreadyAttended ? 'fa-check-double' : 'fa-calendar-check'}"></i> 
                                     <span>${attendanceData.isAlreadyAttended ? 'تم التحضير' : 'حضور'}</span>
                                 </button>
                             ` : ''}
                             ${(actionFilterVal === 'all' || actionFilterVal === 'payment') ? `
                                 <button class="hub-quick-btn ${statusData.paymentBtnClass} ${statusData.nextTargetMonth === null ? 'disabled' : ''}"
-                                        onclick="window.DashboardHubActions.hubQuickPayment(this, ${student.id}, '${student.stage}', ${student.grade}, ${statusData.nextTargetMonth})">
+                                        onclick="window.DashboardHubActions.hubQuickPayment(this, ${studentIdArgument}, '${student.stage}', ${student.grade}, ${statusData.nextTargetMonth})">
                                     <i class="fas fa-money-bill-wave"></i> 
                                     <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
                                         <span>${statusData.paymentBtnText}</span>

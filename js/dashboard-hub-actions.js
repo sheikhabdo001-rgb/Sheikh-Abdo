@@ -39,7 +39,7 @@ window.DashboardHubActions = {
         if (monthIdx === null) return window.notify.error('لا يوجد شهور متاحة للسداد حالياً.');
         
         const students = window.StudentStore.getStudents(stage, grade);
-        const student = students.find(s => s.id === studentId);
+        const student = students.find(s => String(s.id) === String(studentId));
         if (!student || !window.PaymentsStore.validatePaymentPrice(stage, grade, monthIdx)) {
             return;
         }
@@ -94,7 +94,7 @@ window.DashboardHubActions = {
 
     hubOpenEdit(studentId, stage, grade) {
         const students = window.StudentStore.getStudents(stage, grade);
-        const student = students.find(s => s.id === studentId);
+        const student = students.find(s => String(s.id) === String(studentId));
         if (!student) return;
 
         if (window.Students) {
