@@ -175,8 +175,33 @@ window.AppwriteConfig = (() => {
                 this.listRows(this.tables.financialExpenses, teacherId)
             ]);
 
+            const localTenantData = window.TenantStore?.getCurrentTenantData?.() || {};
+            const localFamilyLinks = new Map();
+            Object.entries(localTenantData)
+                .filter(([key]) => key.startsWith('students_'))
+                .forEach(([, value]) => {
+                if (typeof value !== 'string') return;
+                let students;
+                try { students = JSON.parse(value); } catch (error) { return; }
+                if (!Array.isArray(students)) return;
+                students.forEach(student => {
+                    const studentId = student?.id ?? student?.studentId;
+                    if (studentId == null) return;
+                    const familyData = {};
+                    if (Object.prototype.hasOwnProperty.call(student, 'family_group_id')) {
+                        familyData.family_group_id = student.family_group_id;
+                    }
+                    if (Object.prototype.hasOwnProperty.call(student, 'relativeStudentIds')) {
+                        familyData.relativeStudentIds = student.relativeStudentIds;
+                    }
+                    if (Object.keys(familyData).length) {
+                        localFamilyLinks.set(String(studentId), familyData);
+                    }
+                });
+                });
+
             // Appwrite is authoritative after login; discard stale local student copies.
-            Object.keys(window.TenantStore?.getCurrentTenantData?.() || {})
+            Object.keys(localTenantData)
                 .filter(key => key.startsWith('students_'))
                 .forEach(key => localStorage.removeItem(key));
 
@@ -195,6 +220,7 @@ window.AppwriteConfig = (() => {
                     if (!studentsByGrade[key]) studentsByGrade[key] = [];
                     studentsByGrade[key].push({
                         ...data,
+                        ...localFamilyLinks.get(String(row.$id)),
                         id: row.$id,
                         name: data.full_name || '',
                         studentId: row.$id,
