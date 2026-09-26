@@ -4,6 +4,8 @@ window.AppwriteConfig = (() => {
     const appwriteProjectId = '6a954c6a000cc42fbc3a';
     const appwriteEndpoint = 'https://fra.cloud.appwrite.io/v1';
     const appwriteDatabaseId = '6a9550bb0030d15da3b2';
+    const familyLinksPreferenceKey = 'familyLinksByStudent_v1';
+    let familyLinksSyncQueue = Promise.resolve();
 
     const client = new Client()
         .setEndpoint(appwriteEndpoint)
@@ -75,6 +77,38 @@ window.AppwriteConfig = (() => {
                 Permission.update(userRole),
                 Permission.delete(userRole)
             ];
+        },
+        async syncFamilyLinks(students) {
+            if (!Array.isArray(students) || !students.length || typeof this.account.updatePrefs !== 'function') return;
+            const updates = {};
+            students.forEach(student => {
+                const studentId = student?.id ?? student?.studentId;
+                if (studentId == null) return;
+                const familyData = {};
+                ['family_group_id', 'relativeStudentIds', 'link_id'].forEach(field => {
+                    if (Object.prototype.hasOwnProperty.call(student, field)) {
+                        familyData[field] = student[field];
+                    }
+                });
+                if (Object.keys(familyData).length) updates[String(studentId)] = familyData;
+            });
+            if (!Object.keys(updates).length) return;
+
+            familyLinksSyncQueue = familyLinksSyncQueue.catch(() => {}).then(async () => {
+                const user = await this.account.get();
+                const prefs = user?.prefs || {};
+                const savedLinks = prefs[familyLinksPreferenceKey];
+                await this.account.updatePrefs({
+                    prefs: {
+                        ...prefs,
+                        [familyLinksPreferenceKey]: {
+                            ...(savedLinks && typeof savedLinks === 'object' ? savedLinks : {}),
+                            ...updates
+                        }
+                    }
+                });
+            });
+            return familyLinksSyncQueue;
         },
         async deleteRows(tableId, predicate) {
             if (!TablesDB) return;
@@ -164,7 +198,7 @@ window.AppwriteConfig = (() => {
             const teacherId = window.TenantStore?.getCurrentTeacherId();
             if (!TablesDB || !teacherId) return;
 
-            const [studentRows, groupRows, attendanceRows, paymentRows, gradeRows, columnRows, transactionRows, expenseRows] = await Promise.all([
+            const [studentRows, groupRows, attendanceRows, paymentRows, gradeRows, columnRows, transactionRows, expenseRows, accountUser] = await Promise.all([
                 this.listRows(this.tables.students, teacherId),
                 this.listRows(this.tables.groups, teacherId),
                 this.listRows(this.tables.attendanceRecords, teacherId),
@@ -172,7 +206,11 @@ window.AppwriteConfig = (() => {
                 this.listRows(this.tables.examGrades, teacherId),
                 this.listRows(this.tables.examColumns, teacherId),
                 this.listRows(this.tables.financialTransactions, teacherId),
-                this.listRows(this.tables.financialExpenses, teacherId)
+                this.listRows(this.tables.financialExpenses, teacherId),
+                this.account.get().catch(error => {
+                    console.warn('Appwrite account preferences unavailable:', error);
+                    return null;
+                })
             ]);
 
             const localTenantData = window.TenantStore?.getCurrentTenantData?.() || {};
@@ -180,25 +218,34 @@ window.AppwriteConfig = (() => {
             Object.entries(localTenantData)
                 .filter(([key]) => key.startsWith('students_'))
                 .forEach(([, value]) => {
-                if (typeof value !== 'string') return;
-                let students;
-                try { students = JSON.parse(value); } catch (error) { return; }
-                if (!Array.isArray(students)) return;
-                students.forEach(student => {
-                    const studentId = student?.id ?? student?.studentId;
-                    if (studentId == null) return;
-                    const familyData = {};
-                    if (Object.prototype.hasOwnProperty.call(student, 'family_group_id')) {
-                        familyData.family_group_id = student.family_group_id;
-                    }
-                    if (Object.prototype.hasOwnProperty.call(student, 'relativeStudentIds')) {
-                        familyData.relativeStudentIds = student.relativeStudentIds;
-                    }
-                    if (Object.keys(familyData).length) {
-                        localFamilyLinks.set(String(studentId), familyData);
-                    }
+                    if (typeof value !== 'string') return;
+                    let students;
+                    try { students = JSON.parse(value); } catch (error) { return; }
+                    if (!Array.isArray(students)) return;
+                    students.forEach(student => {
+                        const studentId = student?.id ?? student?.studentId;
+                        if (studentId == null) return;
+                        const familyData = {};
+                        ['family_group_id', 'relativeStudentIds', 'link_id'].forEach(field => {
+                            if (Object.prototype.hasOwnProperty.call(student, field)) {
+                                familyData[field] = student[field];
+                            }
+                        });
+                        if (Object.keys(familyData).length) {
+                            localFamilyLinks.set(String(studentId), familyData);
+                        }
+                    });
                 });
-                });
+
+            const cloudFamilyLinks = accountUser?.prefs?.[familyLinksPreferenceKey];
+            if ((!cloudFamilyLinks || typeof cloudFamilyLinks !== 'object') && localFamilyLinks.size) {
+                await this.syncFamilyLinks(Array.from(localFamilyLinks, ([id, familyData]) => ({ id, ...familyData })));
+            }
+            const familyLinks = new Map(
+                cloudFamilyLinks && typeof cloudFamilyLinks === 'object'
+                    ? Object.entries(cloudFamilyLinks)
+                    : localFamilyLinks
+            );
 
             // Appwrite is authoritative after login; discard stale local student copies.
             Object.keys(localTenantData)
@@ -220,7 +267,7 @@ window.AppwriteConfig = (() => {
                     if (!studentsByGrade[key]) studentsByGrade[key] = [];
                     studentsByGrade[key].push({
                         ...data,
-                        ...localFamilyLinks.get(String(row.$id)),
+                        ...familyLinks.get(String(row.$id)),
                         id: row.$id,
                         name: data.full_name || '',
                         studentId: row.$id,
@@ -377,6 +424,7 @@ window.AppwriteConfig = (() => {
                     });
                 }
             }));
+            await this.syncFamilyLinks(activeStudents);
         },
         async syncAttendanceRecord(record) {
             if (!TablesDB || !record?.studentId) return;
